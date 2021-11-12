@@ -1,0 +1,11 @@
+package com.mtsscreen.webapi;
+
+import net.sf.json.JSONObject;
+
+public class Phone {
+	public JSONObject send(String to) {
+		JSONObject r = null;
+		
+		return r;
+	}
+}

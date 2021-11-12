@@ -1,0 +1,10 @@
+package com.mtsscreen.webapi;
+
+import net.sf.json.JSONObject;
+
+public class Mail {
+	public JSONObject send(String to) {
+		JSONObject r = null;
+		return r;
+	}
+}

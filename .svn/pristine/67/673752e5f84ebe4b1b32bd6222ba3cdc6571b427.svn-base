@@ -1,0 +1,6 @@
+datasource_url=jdbc:postgresql://172.16.9.5:5432/dbscreen
+datasource_username=screen
+datasource_password=screen
+datasource_driver_class_name=org.postgresql.Driver
+
+secondTimeOut=7200

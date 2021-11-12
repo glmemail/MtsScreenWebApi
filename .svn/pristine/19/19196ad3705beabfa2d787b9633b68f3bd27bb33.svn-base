@@ -1,0 +1,39 @@
+package com.mtsscreen.webapi.common;
+
+/**
+ * @ClassName: StringUtil
+ * @Description: å­—ç¬¦ä¸²è½¬æ¢å…±é€?
+ * @author èµµå³°å‰?
+ * @date 2014å¹?8æœ?22æ—? ä¸‹åˆ3:54:26
+ * @version 1.0
+ */
+public class StringUtil
+{
+    /**
+     * æ£?æŸ¥æ–‡å­—åˆ—ã?<code>null</codeã€?
+     * 
+     * @param str
+     *            æ–‡å­—åˆ?
+     * @return trueæˆ–è?…false
+     */
+    public static boolean isEmpty(String str)
+    {
+        if (str == null || str.length() == 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public static  boolean isNumeric(String str) {
+        for (int i = 0; i < str.length(); i++) {
+            if (!Character.isDigit(str.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
+}

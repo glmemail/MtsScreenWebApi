@@ -1,0 +1,72 @@
+package com.mtsscreen.webapi;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.mtsscreen.webapi.common.GetConfigMsg;
+import com.mtsscreen.webapi.common.SQL;
+
+import net.sf.json.JSONObject;
+
+@SuppressWarnings("serial")
+@WebServlet("/sendNotice")
+public class Notification extends HttpServlet {
+	
+	public static GetConfigMsg getConfigMsg = GetConfigMsg.getInstance();
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		String phone = request.getParameter("phone");
+		String mail = request.getParameter("mail");
+		String wechat = request.getParameter("wechat");
+		SQL sql = new SQL();
+		if ("1".equals(phone)) {
+			sendPhone("1111");
+		}
+		if ("1".equals(mail)) {
+			sendMail("2222");
+		}
+		if ("1".equals(wechat)) {
+			sendWechat("3333");
+		}
+		
+	}
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		
+	}
+	
+	public JSONObject sendPhone(String to) {
+		JSONObject r = null;
+		Phone phone = new Phone();
+		
+		
+		
+		
+		return r;
+	}
+	
+	public JSONObject sendMail(String to) {
+		JSONObject r = null;
+		Mail mail = new Mail();
+		
+		
+		
+		return r;
+		
+	}
+	public JSONObject sendWechat(String to) {
+		JSONObject r = null;
+		Wechat wechat = new Wechat();
+		
+		
+		return r;
+	}
+}

@@ -1,0 +1,79 @@
+package com.mtsscreen.webapi;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.mtsscreen.webapi.common.GetConfigMsg;
+import com.mtsscreen.webapi.common.SQL;
+import com.mtsscreen.webapi.common.StringUtil;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
+@SuppressWarnings("serial")
+@WebServlet("/getperformance")
+public class Performance extends HttpServlet{
+	
+	public static GetConfigMsg getConfigMsg = GetConfigMsg.getInstance();
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		JSONObject result = new JSONObject();
+		String instanceId = request.getParameter("instanceId");
+		SQL sql = new SQL();
+        Map parm = new HashMap();
+        if (!StringUtil.isEmpty(instanceId)) {
+        	parm.put("instanceId", instanceId);
+        }
+        JSONObject performance_json = sql.select_performance(parm);
+        JSONArray performance_json_data = performance_json.getJSONArray("data");
+        JSONObject performance = null;
+        for (int i = 0;i < performance_json_data.size();i++) {
+            performance = new JSONObject();
+            JSONObject performance_json_data_json = (JSONObject) performance_json_data.get(i);
+            String type = performance_json_data_json.getString("type");
+            String state = performance_json_data_json.getString("state");
+            String value = performance_json_data_json.getString("value");
+            String time = performance_json_data_json.getString("time");
+            String updated_at = performance_json_data_json.getString("updated_at");
+            JSONArray result_jsonarr = (JSONArray) result.get(type);;
+            if (result_jsonarr == null) {
+            	result_jsonarr = new JSONArray();
+            	JSONObject json = new JSONObject();
+            	json.put("value", value);
+            	json.put("time", time);
+            	result_jsonarr.add(json);
+            } else {
+            	JSONObject json = new JSONObject();
+            	json.put("value", value);
+            	json.put("time", time);
+            	result_jsonarr.add(json);
+            }
+            
+            performance.put("updated_at", updated_at);
+            result.put(type + "_state", state);
+            result.put(type, result_jsonarr);
+        }
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        result.put("errcode", "0");
+        result.put("errmsg", "ok");
+        out.print(result); 
+        out.flush();
+        out.close();
+		
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		
+	}
+}

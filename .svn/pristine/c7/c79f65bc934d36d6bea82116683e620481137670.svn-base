@@ -1,0 +1,58 @@
+package com.mtsscreen.webapi;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.mtsscreen.webapi.common.GetConfigMsg;
+import com.mtsscreen.webapi.common.SQL;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
+@SuppressWarnings("serial")
+@WebServlet("/getlink")
+public class Link extends HttpServlet{
+	
+	public static GetConfigMsg getConfigMsg = GetConfigMsg.getInstance();
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		JSONObject result = new JSONObject();
+		SQL sql = new SQL();
+		Map parm = new HashMap();
+        JSONObject link_result = sql.select_link(parm);
+        JSONArray data = link_result.getJSONArray("data");
+        JSONObject link = null;
+        for (int i = 0;i < data.size();i++) {
+            link = new JSONObject();
+            JSONObject jsonObject = (JSONObject) data.get(i);
+            String key = jsonObject.getString("key");
+            String state = jsonObject.getString("state");
+            String updated_at = jsonObject.getString("updated_at");
+            link.put("state", state);
+            link.put("updated_at", updated_at);
+            result.put(key, link);
+        }
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        result.put("errcode", "0");
+        result.put("errmsg", "ok");
+        out.print(result); 
+        out.flush();
+        out.close();
+		
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		
+	}
+}
